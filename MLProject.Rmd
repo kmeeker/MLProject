@@ -1,0 +1,38 @@
+---
+title: "MachineLearningProject"
+author: "Kirsten Meeker"
+date: "April 17, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Machine Learning course project
+
+Use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants to predict the manner in which they did the exercise. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. This is the "classe" variable in the training set. 
+
+Describe how you built your model, how you used cross validation, what you think the expected out of sample error is, and why you made the choices you did. You will also use your prediction model to predict 20 different test cases.
+
+# Exploration
+```{r pml_data}
+# load data
+train <- read.csv('pml-training.csv')
+test <- read.csv('pml-testing.csv')
+names(train)
+```
+
+Data measures are from belt, arm, dumbell, and forearm. The measures are acceleration, roll, pitch, and yaw angles. Statistics for these measures, included in the data, are total_accel, y,z; roll, pitch, and yaw: kurtosis, skewness, min, max, average, variance, standard deviation, x, y, z, magnet x, y, z. 
+
+Note: Pitch is misspelled in "kurtosis_picth_belt".
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
