@@ -1,0 +1,73 @@
+---
+title: "Machine Learning Course Project"
+author: "Kirsten Meeker"
+date: "April 23, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE, echo=TRUE}
+knitr::opts_chunk$set(cache=FALSE)
+```
+```{r, echo=FALSE,results='hide',warning=FALSE,message=FALSE}
+require(knitr)
+require(caret)
+require(gbm)
+knitr::read_chunk('MLProject.R')
+```
+
+###Background
+
+Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement - a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information is available from the website here: http://groupware.les.inf.puc-rio.br/har (see the section on the Weight Lifting Exercise Dataset).
+
+###Data Sources
+
+The training data for this project are available here:
+
+https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv
+
+The test data are available here:
+
+https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv
+
+###Problem Statement
+Use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants to predict the manner in which they did the exercise. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. This is the "classe" variable in the training set. 
+
+Describe how you built your model, how you used cross validation, what you think the expected out of sample error is, and why you made the choices you did. You will also use your prediction model to predict 20 different test cases.
+
+### Data Exploration
+```{r explore}
+<<ExploreData>>
+```
+
+Data measures are from belt, arm, dumbell, and forearm. The measures are acceleration, roll, pitch, and yaw angles. Statistics for these measures, included in the data, are total_accel, y,z; roll, pitch, and yaw: kurtosis, skewness, min, max, average, variance, standard deviation, x, y, z, magnet x, y, z. Most of the statistics observations are NA, and since they are dependent on the direct measurements do not add any new information I will remove them to avoid throwing out the rest of those observations.
+
+```{r clean}
+<<CleanData>>
+```
+
+### Cross validation approach
+I split the training data set in halves, one for training and the other for cross validation. The resulting training and cross validation data sets are about 9800 samples and the test data set is only 20 observations.
+
+```{r prepare}
+<<PrepareData>>
+```
+
+### Model choice
+Random forrests or boosting with trees seem the most logical models to try since this is a classification problem and they have had the best performance historically. Since random forrest are sometimes hard to interpret, I'll try boosting. Boosting takes a lot of weak predictors and combines them to make a stronger predictor. Since this data set is from sensors (accelerometers and gyros) monitoring people exercising, the differences between correct and incorrect weight-lifting technique could be subtle, therefore boosting may help strengthen the tree predictor.
+
+```{r model}
+<<ModelFit>>
+```
+
+## Cross Validation Result
+There is one out of sample error for class "B" shown by the confusion matrix:
+```{r cross}
+<<CrossValidate>>
+```
+
+## Final test result
+The boosting with trees model predicts that all the test samples are in class "A".
+```{r test}
+<<Test>>
+```
+
